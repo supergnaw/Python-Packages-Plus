@@ -11,7 +11,8 @@ re_flags = {
     "x": re.VERBOSE
 }
 
-if not hasattr(re, 'NOFLAG'): setattr(re, 'NOFLAG', 0)
+if not hasattr(re, 'NOFLAG'):
+    setattr(re, 'NOFLAG', 0)
 
 # SPECIALTY INTERNAL FUNCTIONS
 
@@ -34,6 +35,25 @@ def _parse_flags(flags: str = "", pre_flags: int = re.NOFLAG) -> int:
 
     return parsed_flags
 
+
+# CUSTOM FUNCTIONS
+
+def is_regex(pattern: AnyStr) -> bool:
+    """
+    Checks if a string is a regex pattern.
+    
+    :param pattern: input string to test 
+    :return: true if it is a regex string, false if not
+    """
+    if not pattern.strip():
+        return False
+    if "/" != pattern[0]:
+        pattern = f"/{pattern}"
+    if "/" != pattern[-1]:
+        pattern = f"{pattern}/"
+    if re.fullmatch(pattern=r"^\/(.*)\/([\w]*)$", string=f"{pattern}"):
+        return True
+    return False
 
 # UPDATED RE FUNCTIONS USING COMPILED REGEX
 
